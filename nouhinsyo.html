@@ -659,7 +659,7 @@
       const fmt = n => "¥" + (Number(n) || 0).toLocaleString("ja-JP");
 
       let rowCounter = 1;
-      const MAX_ROWS = 5;
+      const MAX_ROWS = 8;
 
       // ページ切り替え機能
       document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -1029,14 +1029,14 @@
 
       function addRow() {
       if ($("body").rows.length >= MAX_ROWS) {
-      alert("商品は最大5件までです");
+      alert("商品は最大8件までです");
       return;
       }
 
       const tr = document.createElement("tr");
       tr.innerHTML = `
       <td><input placeholder="H001"></td>
-      <td><textarea placeholder="HERMÈS ケリー25"></textarea></td>
+      <td><textarea placeholder="こちらに商品詳細を入力"></textarea></td>
       <td class="num"><input type="number" min="0" step="1" placeholder="0" class="price"></td>
       <td class="num"><input type="number" min="1" step="1" value="1" class="qty"></td>
       <td class="line-total">¥0</td>`;
