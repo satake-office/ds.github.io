@@ -35,7 +35,7 @@
       }
 
       .container {
-        max-width: 1200px;
+        max-width: 100%;
         margin: 0 auto;
         padding: 20px;
       }
@@ -76,7 +76,7 @@
       width: 210mm;
       height: 297mm;
       margin: 0 auto;
-      padding: 20mm 25mm;
+      padding: 10mm 18mm;
       box-sizing: border-box;
       position: relative;
       overflow: hidden;
@@ -318,7 +318,7 @@
       }
       body { -webkit-print-color-adjust: exact; }
       .sheet {
-      padding: 15mm 20mm;
+      padding: 5mm 5mm;
       height: auto;
       min-height: 297mm;
       }
@@ -590,8 +590,13 @@
       <!-- 納品書履歴ページ -->
       <div id="history-page" class="page">
         <div class="history-controls">
-          <input type="text" id="search-no" class="search-input" placeholder="納品書番号で検索">
-          <input type="date" id="search-date" class="search-input">
+          <input
+            type="text"
+            id="search-no"
+            class="search-input"
+            placeholder="納品書番号で検索"
+          />
+          <input type="date" id="search-date" class="search-input" />
           <button class="btn" id="search-btn">検索</button>
           <button class="btn secondary" id="clear-search">検索クリア</button>
           <button class="update-no-btn" id="update-no">納品書番号更新</button>
@@ -603,7 +608,7 @@
           <thead>
             <tr>
               <th class="checkbox-cell">
-                <input type="checkbox" id="select-all">
+                <input type="checkbox" id="select-all" />
               </th>
               <th>納品書番号</th>
               <th>発行日</th>
@@ -623,8 +628,12 @@
         </div>
 
         <div class="history-actions">
-          <button class="btn" id="download-selected">選択した項目をダウンロード</button>
-          <button class="btn secondary" id="delete-selected">選択した項目を削除</button>
+          <button class="btn" id="download-selected">
+            選択した項目をダウンロード
+          </button>
+          <button class="btn secondary" id="delete-selected">
+            選択した項目を削除
+          </button>
         </div>
       </div>
     </div>
@@ -651,7 +660,7 @@
 
       let rowCounter = 1;
       const MAX_ROWS = 5;
-      
+
       // ページ切り替え機能
       document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -662,11 +671,11 @@
           document.querySelectorAll('.nav-btn').forEach(navBtn => {
             navBtn.classList.remove('active');
           });
-          
+
           // クリックされたボタンと対応するページをアクティブにする
           this.classList.add('active');
           $(`${this.dataset.page}-page`).classList.add('active');
-          
+
           // 履歴ページに切り替えた場合は履歴を読み込む
           if (this.dataset.page === 'history') {
             loadHistory();
@@ -680,7 +689,7 @@
         statusDiv.textContent = message;
         statusDiv.className = `status-message status-${type}`;
         statusDiv.style.display = 'block';
-        
+
         setTimeout(() => {
           statusDiv.style.display = 'none';
         }, 3000);
@@ -690,11 +699,11 @@
       async function saveInvoice() {
         const saveBtn = $('save');
         const originalText = saveBtn.textContent;
-        
+
         try {
           saveBtn.innerHTML = '保存中 <span class="loading"></span>';
           saveBtn.disabled = true;
-          
+
           const invoiceData = {
             no: $("no").textContent,
             issue: $("issue").textContent,
@@ -707,7 +716,7 @@
             total: $("total").textContent,
             createdAt: new Date().toISOString()
           };
-          
+
           // 商品データを収集
           [...$("body").rows].forEach(tr => {
             const item = {
@@ -719,11 +728,11 @@
             };
             invoiceData.items.push(item);
           });
-          
+
           // Firebaseに保存
           await database.ref('invoices/' + invoiceData.no).set(invoiceData);
           showStatus('納品書を保存しました');
-          
+
         } catch (error) {
           console.error('保存エラー:', error);
           showStatus('保存に失敗しました', 'error');
@@ -736,30 +745,30 @@
       async function loadHistory() {
         const historyBody = $('history-body');
         const noHistory = $('no-history');
-        
+
         try {
           historyBody.innerHTML = '<tr><td colspan="7" style="text-align: center;">読み込み中...</td></tr>';
-          
+
           const snapshot = await database.ref('invoices').once('value');
           const invoicesData = snapshot.val();
-          
+
           if (!invoicesData) {
             historyBody.innerHTML = '';
             noHistory.style.display = 'block';
             return;
           }
-          
+
           noHistory.style.display = 'none';
           historyBody.innerHTML = '';
-          
+
           const invoices = Object.keys(invoicesData).map(key => ({
             ...invoicesData[key],
             id: key
           }));
-          
+
           // 発行日でソート（新しい順）
           invoices.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-          
+
           invoices.forEach(invoice => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -776,7 +785,7 @@
             `;
             historyBody.appendChild(tr);
           });
-          
+
         } catch (error) {
           console.error('履歴読み込みエラー:', error);
           historyBody.innerHTML = '';
@@ -798,12 +807,12 @@
         try {
           const snapshot = await database.ref('invoices/' + no).once('value');
           const invoice = snapshot.val();
-          
+
           if (!invoice) {
             alert('指定された納品書が見つかりません');
             return;
           }
-          
+
           // 納品書作成ページにデータを設定
           $("no").textContent = invoice.no;
           $("issue").textContent = invoice.issue;
@@ -814,7 +823,7 @@
           $("pay").value = invoice.pay;
           $("custZip").value = invoice.custZip;
           $("custAddr").value = invoice.custAddr;
-          
+
           // 商品データを設定
           clearRows();
           invoice.items.forEach((item, index) => {
@@ -826,7 +835,7 @@
             tr.querySelector(".qty").value = item.qty;
           });
           calc();
-          
+
           // 納品書作成ページに切り替え
           document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.classList.remove('active');
@@ -836,7 +845,7 @@
             page.classList.remove('active');
             if (page.id === 'create-page') page.classList.add('active');
           });
-          
+
         } catch (error) {
           console.error('納品書読み込みエラー:', error);
           showStatus('納品書の読み込みに失敗しました', 'error');
@@ -845,7 +854,7 @@
 
       async function deleteInvoice(no) {
         if (!confirm('この納品書を削除しますか？')) return;
-        
+
         try {
           await database.ref('invoices/' + no).remove();
           showStatus('納品書を削除しました');
@@ -859,47 +868,47 @@
       async function searchInvoices() {
         const searchNo = $('search-no').value.trim();
         const searchDate = $('search-date').value;
-        
+
         try {
           const snapshot = await database.ref('invoices').once('value');
           const invoicesData = snapshot.val();
-          
+
           if (!invoicesData) {
             $('history-body').innerHTML = '';
             $('no-history').style.display = 'block';
             return;
           }
-          
+
           let invoices = Object.keys(invoicesData).map(key => ({
             ...invoicesData[key],
             id: key
           }));
-          
+
           if (searchNo) {
-            invoices = invoices.filter(inv => 
+            invoices = invoices.filter(inv =>
               inv.no.toLowerCase().includes(searchNo.toLowerCase())
             );
           }
-          
+
           if (searchDate) {
-            invoices = invoices.filter(inv => 
+            invoices = invoices.filter(inv =>
               inv.deliver === searchDate
             );
           }
-          
+
           // 検索結果を表示
           const historyBody = $('history-body');
           const noHistory = $('no-history');
-          
+
           if (invoices.length === 0) {
             historyBody.innerHTML = '';
             noHistory.style.display = 'block';
             return;
           }
-          
+
           noHistory.style.display = 'none';
           historyBody.innerHTML = '';
-          
+
           invoices.forEach(invoice => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -916,7 +925,7 @@
             `;
             historyBody.appendChild(tr);
           });
-          
+
         } catch (error) {
           console.error('検索エラー:', error);
           showStatus('検索に失敗しました', 'error');
@@ -936,7 +945,7 @@
         const newNo = `G25N${mm}${dd}-${String(Math.floor(Math.random() * 90) + 10)}`;
         $("no").textContent = newNo;
         $("issue").textContent = `${now.getFullYear()}/${mm}/${dd}`;
-        
+
         // 納品日の初期値を3日後に設定
         const deliverDate = new Date(now);
         deliverDate.setDate(now.getDate() + 3);
@@ -944,7 +953,7 @@
         const deliverDD = String(deliverDate.getDate()).padStart(2, "0");
         $("deliver").value = `${deliverDate.getFullYear()}-${deliverMM}-${deliverDD}`;
         updateDeliverDisplay();
-        
+
         // フォームをクリア
         $("custName").value = "";
         updatePrintName();
@@ -960,13 +969,13 @@
           alert('ダウンロードする項目を選択してください');
           return;
         }
-        
+
         // 選択された納品書番号を収集
         const selectedNos = Array.from(selectedItems).map(item => item.dataset.no);
-        
+
         // Firebaseから選択された納品書データを取得
         Promise.all(
-          selectedNos.map(no => 
+          selectedNos.map(no =>
             database.ref('invoices/' + no).once('value').then(snapshot => snapshot.val())
           )
         ).then(invoices => {
@@ -993,14 +1002,14 @@
           alert('削除する項目を選択してください');
           return;
         }
-        
+
         if (!confirm(`選択した${selectedItems.length}件の納品書を削除しますか？`)) return;
-        
+
         try {
-          const deletePromises = Array.from(selectedItems).map(item => 
+          const deletePromises = Array.from(selectedItems).map(item =>
             database.ref('invoices/' + item.dataset.no).remove()
           );
-          
+
           await Promise.all(deletePromises);
           showStatus(`${selectedItems.length}件の納品書を削除しました`);
           loadHistory(); // 履歴を更新
