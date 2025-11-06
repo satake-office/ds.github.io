@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GINZA SATAKE 納品書</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+      --ink: #1a1a1a;
+      --gold: #8c6d46;
+      --light-gold: #f5f2eb;
+      --muted: #666;
+      --line: #d9d2c5;
+      --font-sans: 'Noto Sans JP', 'Hiragino Sans', 'Meiryo', sans-serif;
+      }
+
+      * {
+      box-sizing: border-box;
+      }
+
+      body {
+      font-family: var(--font-sans);
+      color: var(--ink);
+      background: #fff;
+      margin: 0;
+      line-height: 1.6;
+      font-weight: 400;
+      }
+
+      .sheet {
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto;
+      padding: 20mm 25mm;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      }
+
+      header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 6mm;
+      margin-bottom: 8mm;
+      font-size: 12px;
+      align-items: flex-end;
+      }
+
+      header .company-info {
+      line-height: 1.6;
+      }
+
+      header .document-info {
+      text-align: right;
+      line-height: 1.6;
+      }
+
+      .logo {
+      text-align: center;
+      margin-bottom: 6mm;
+      }
+
+      .logo img {
+      height: 28px;
+      }
+
+      h1 {
+      text-align: center;
+      font-size: 20px;
+      letter-spacing: 0.2em;
+      margin: 8mm 0 10mm;
+      font-weight: 500;
+      }
+
+      .customer {
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      padding: 12px 16px;
+      font-size: 13px;
+      margin-bottom: 8mm;
+      background: var(--light-gold);
+      }
+
+      .customer label {
+      color: var(--muted);
+      font-size: 11px;
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 500;
+      }
+
+      .customer input, .customer textarea, select {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid transparent;
+      padding: 4px 0;
+      font-size: 13px;
+      resize: none;
+      background: transparent;
+      font-family: var(--font-sans);
+      }
+
+      .customer input:focus, .customer textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--gold);
+      }
+
+      .customer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 8px;
+      }
+
+      /* 顧客名の表示 */
+      .customer-name-container {
+      position: relative;
+      }
+
+      .name-wrapper {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      }
+
+      .sama {
+      position: absolute;
+      right: 0;
+      bottom: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      }
+
+      /* 郵便番号入力フィールド */
+      .zip-input-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      }
+
+      .zip-display {
+      color: var(--ink);
+      margin-right: 4px;
+      }
+
+      table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 8mm;
+      font-size: 13px;
+      border: 1px solid var(--line);
+      }
+
+      th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 10px;
+      vertical-align: top;
+      }
+
+      th {
+      background: var(--light-gold);
+      text-align: left;
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 12px;
+      }
+
+      td input, td textarea {
+      width: 100%;
+      border: none;
+      font-size: 13px;
+      padding: 4px;
+      line-height: 1.5;
+      color: var(--ink);
+      background: transparent;
+      font-family: var(--font-sans);
+      resize: none;
+      height: 54px; /* 3行分の高さ */
+      overflow: hidden;
+      }
+
+      td.num input {
+      text-align: right;
+      }
+
+      td.line-total {
+      text-align: right;
+      font-weight: 500;
+      }
+
+      .sum-box {
+      width: 260px;
+      margin-left: auto;
+      font-size: 14px;
+      margin-bottom: 10mm;
+      border: 1px solid var(--line);
+      }
+
+      .sum-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--line);
+      }
+
+      .sum-row:last-child {
+      border-bottom: none;
+      background: var(--light-gold);
+      }
+
+      .sum-row strong {
+      font-size: 15px;
+      }
+
+      /* 合計金額の強調表示 */
+      .total-amount {
+      font-size: 16px !important;
+      font-weight: 600;
+      color: var(--ink);
+      }
+
+      .notes {
+      border-top: 1px solid var(--gold);
+      padding-top: 6mm;
+      font-size: 11px;
+      line-height: 1.7;
+      color: var(--muted);
+      }
+
+      footer {
+      border-top: 1px solid var(--gold);
+      margin-top: 10mm;
+      padding-top: 4mm;
+      font-size: 10px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      }
+
+      .actions {
+      margin: 10px 0 14px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      }
+
+      .btn {
+      background: var(--ink);
+      color: #fff;
+      border: none;
+      border-radius: 2px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      font-family: var(--font-sans);
+      }
+
+      .btn.secondary {
+      background: #fff;
+      color: var(--ink);
+      border: 1px solid var(--ink);
+      }
+
+      /* 印刷時のスタイル */
+      @media print {
+      .actions { display: none; }
+      input, textarea, select {
+      border: none !important;
+      appearance: none;
+      background: transparent !important;
+      }
+      body { -webkit-print-color-adjust: exact; }
+      .sheet {
+      padding: 15mm 20mm;
+      height: auto;
+      min-height: 297mm;
+      }
+
+      /* 納品日の印刷スタイル */
+      #deliver-display {
+      display: inline !important;
+      }
+      #deliver {
+      display: none !important;
+      }
+
+      /* 顧客名の印刷スタイル - 修正 */
+      .customer-name-container {
+      position: relative;
+      }
+
+      .name-wrapper {
+      display: flex;
+      align-items: center;
+      }
+
+
+
+      /* 入力フィールドを非表示にして、代わりにテキストを表示 */
+      #custName {
+      display: none;
+      }
+
+      .customer-name-container::after {
+      content: attr(data-print-name) " 様";
+      display: block;
+      padding: 4px 0;
+      font-size: 13px;
+      color: var(--ink);
+      }
+      }
+
+      /* 画面表示時のスタイル */
+      #deliver-display {
+      display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sheet">
+      <div class="logo">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0682/9470/5317/files/logo0.svg"
+          alt="GINZA SATAKE"
+        />
+      </div>
+
+      <header>
+        <div class="company-info">
+          〒104-0061 東京都中央区銀座7-3-6 銀座髙木ビル2F<br />
+          TEL: 03-6263-8316<br />登録番号: T3011401018313
+        </div>
+        <div class="document-info">
+          納品書番号: <span id="no"></span><br />
+          発行日: <span id="issue"></span><br />
+          納品日: <input type="date" id="deliver" />
+          <span id="deliver-display"></span>
+        </div>
+      </header>
+
+      <h1>納 品 書</h1>
+
+      <div class="customer">
+        <div class="customer-grid">
+          <div class="customer-name-container" id="name-container">
+            <label>お名前</label>
+            <div class="name-wrapper">
+              <input id="custName" placeholder="山田太郎" maxlength="8" />
+            </div>
+          </div>
+          <div>
+            <label>お支払方法</label>
+            <select id="pay">
+              <option>クレジットカード</option>
+              <option>銀行振込</option>
+              <option>代金引換</option>
+              <option>店頭支払</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top: 8px;">
+          <label>郵便番号</label>
+          <div class="zip-input-container">
+            <span class="zip-display">〒</span>
+            <input id="custZip" placeholder="100-0001" maxlength="8" />
+          </div>
+        </div>
+        <div style="margin-top: 6px;">
+          <label>ご住所</label>
+          <textarea
+            id="custAddr"
+            rows="1"
+            placeholder="東京都千代田区"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="add">＋ 行を追加</button>
+        <button class="btn secondary" id="clear">行をクリア</button>
+        <button class="btn" onclick="window.print()">印刷 / PDF</button>
+      </div>
+
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th style="width:15%">品番号</th>
+            <th>商品内容</th>
+            <th style="width:15%">単価（税込）</th>
+            <th style="width:10%">数量</th>
+            <th style="width:15%">小計（税込）</th>
+          </tr>
+        </thead>
+        <tbody id="body"></tbody>
+      </table>
+
+      <div class="sum-box">
+        <div class="sum-row">
+          <div>税抜金額</div>
+          <div id="exSub">¥0</div>
+        </div>
+        <div class="sum-row">
+          <div>消費税（10％）</div>
+          <div id="tax">¥0</div>
+        </div>
+        <div class="sum-row">
+          <strong>合計（税込）</strong
+          ><strong id="total" class="total-amount">¥0</strong>
+        </div>
+      </div>
+
+      <div class="notes">
+        恐れ入りますが、商品の性質上、原則として返品・交換は承っておりません。
+        万が一不良品やご注文内容と異なる商品がございました場合は、早急にご対応させていただきます。
+        バッグ・革製品につきましては、水濡れや湿気などにより素材が変質・変色する場合がございます。
+        ご使用・保管の際には十分ご注意くださいませ。
+      </div>
+
+      <footer>
+        <div>恒宸株式会社（GINZA SATAKE）</div>
+        <div>© GINZA SATAKE All Rights Reserved.</div>
+      </footer>
+    </div>
+
+    <script>
+      const $ = id => document.getElementById(id);
+      const fmt = n => "¥" + (Number(n) || 0).toLocaleString("ja-JP");
+
+      let rowCounter = 1;
+      const MAX_ROWS = 5;
+
+      function addRow() {
+      if ($("body").rows.length >= MAX_ROWS) {
+      alert("商品は最大5件までです");
+      return;
+      }
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+      <td><input placeholder="H001"></td>
+      <td><textarea placeholder="HERMÈS ケリー25"></textarea></td>
+      <td class="num"><input type="number" min="0" step="1" placeholder="0" class="price"></td>
+      <td class="num"><input type="number" min="1" step="1" value="1" class="qty"></td>
+      <td class="line-total">¥0</td>`;
+      $("body").appendChild(tr);
+
+      // 価格入力フィールドにフォーカスイベントを追加
+      const priceInput = tr.querySelector(".price");
+      priceInput.addEventListener("focus", function() {
+      this.select();
+      });
+
+      tr.querySelectorAll("input,textarea").forEach(i => i.addEventListener("input", calc));
+      rowCounter++;
+      calc();
+      }
+
+      function clearRows() {
+      $("body").innerHTML = "";
+      rowCounter = 1;
+      addRow();
+      }
+
+      function calc() {
+      let total = 0;
+      [...$("body").rows].forEach(tr => {
+      const price = Number(tr.querySelector(".price").value) || 0;
+      const qty = Number(tr.querySelector(".qty").value) || 0;
+      const line = price * qty;
+      tr.querySelector(".line-total").textContent = fmt(line);
+      total += line;
+      });
+      $("total").textContent = fmt(total);
+      const ex = Math.round(total / 1.1);
+      const tax = total - ex;
+      $("exSub").textContent = fmt(ex);
+      $("tax").textContent = fmt(tax);
+      }
+
+      // 郵便番号の自動フォーマット
+      function formatZipCode() {
+      const zipInput = $("custZip");
+      let value = zipInput.value.replace(/-\D/g, '');
+
+      if (value.length > 8) {
+      value = value.substring(0, 8);
+      }
+
+      zipInput.value = value;
+      }
+
+      // 納品日の表示更新
+      function updateDeliverDisplay() {
+      const deliverDate = $("deliver").value;
+      if (deliverDate) {
+      const date = new Date(deliverDate);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      $("deliver-display").textContent = `${year}/${month}/${day}`;
+      }
+      }
+
+      // 顧客名の印刷用データ属性を更新
+      function updatePrintName() {
+      const nameContainer = $("name-container");
+      const custName = $("custName").value || "";
+      nameContainer.setAttribute("data-print-name", custName);
+      }
+
+      $("add").onclick = addRow;
+      $("clear").onclick = clearRows;
+
+      // 郵便番号入力のイベントリスナー
+      $("custZip").addEventListener('input', formatZipCode);
+
+      // 納品日のイベントリスナー
+      $("deliver").addEventListener('change', updateDeliverDisplay);
+
+      // 顧客名入力のイベントリスナー
+      $("custName").addEventListener('input', updatePrintName);
+
+      // 初期設定
+      const now = new Date();
+      const mm = String(now.getMonth() + 1).padStart(2, "0");
+      const dd = String(now.getDate()).padStart(2, "0");
+      $("no").textContent = `G25N${mm}${dd}-${String(Math.floor(Math.random() * 90) + 10)}`;
+      $("issue").textContent = `${now.getFullYear()}/${mm}/${dd}`;
+
+      // 納品日の初期値を3日後に設定
+      const deliverDate = new Date(now);
+      deliverDate.setDate(now.getDate() + 3);
+      const deliverMM = String(deliverDate.getMonth() + 1).padStart(2, "0");
+      const deliverDD = String(deliverDate.getDate()).padStart(2, "0");
+      $("deliver").value = `${deliverDate.getFullYear()}-${deliverMM}-${deliverDD}`;
+      updateDeliverDisplay();
+
+      // 顧客名の初期設定
+      updatePrintName();
+
+      addRow();
+    </script>
+  </body>
+</html>
